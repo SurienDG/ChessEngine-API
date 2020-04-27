@@ -4,6 +4,19 @@
         "tslint:recommended"
     ],
     "jsRules": {},
-    "rules": {"no-console": false},
+    "rules": {
+        "no-console": false,
+        "semicolon": [
+            true,
+            "always"
+        ],
+        "max-line-length": {
+            "options": [120]
+        },
+        "cyclomatic-complexity": true,
+        "quotemark": [true, "single", "avoid-escape"],
+        "typedef": [true, "call-signature", "parameter", "member-variable-declaration"]
+
+    },
     "rulesDirectory": []
 }
