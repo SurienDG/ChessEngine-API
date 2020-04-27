@@ -10,6 +10,7 @@
   "devDependencies": {
     "@types/express": "^4.17.6",
     "husky": "^4.2.5",
+    "lint-staged": "^10.1.7",
     "nodemon": "^2.0.3",
     "rimraf": "^3.0.2",
     "ts-node": "^8.9.1",
@@ -25,8 +26,11 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.ts": ["tslint -c tslint.json 'src/**/*.ts' --fix", "git add"]
   },
   "repository": {
     "type": "git",
