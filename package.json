@@ -1,0 +1,31 @@
+{
+  "name": "chessengine-api",
+  "version": "1.0.0",
+  "description": "chess engine with working AI",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "https": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.6",
+    "tslint": "^6.1.2",
+    "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "start": "npx tsc && node jscode/app.js",
+    "clean" : "npx tsc --build --clean",
+    "test": "echo \"Error: no test specified\" && exit 1"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SurienDG/ChessEngine-API.git"
+  },
+  "author": "Surien Das-Giwojno & Daniel Bergin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SurienDG/ChessEngine-API/issues"
+  },
+  "homepage": "https://github.com/SurienDG/ChessEngine-API#readme"
+}
