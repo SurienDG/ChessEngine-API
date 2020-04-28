@@ -30,7 +30,10 @@
     }
   },
   "lint-staged": {
-    "*.ts": ["tslint -c tslint.json 'src/**/*.ts' --fix", "git add"]
+    "*.ts": [
+      "tslint -c tslint.json 'src/**/*.ts' --fix",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
