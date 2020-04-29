@@ -47,6 +47,21 @@
         "xstddef": "cpp",
         "xstring": "cpp",
         "xtr1common": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "atomic": "cpp",
+        "condition_variable": "cpp",
+        "resumable": "cpp",
+        "future": "cpp",
+        "iostream": "cpp",
+        "array": "cpp",
+        "cctype": "cpp",
+        "clocale": "cpp",
+        "forward_list": "cpp",
+        "iterator": "cpp",
+        "map": "cpp",
+        "numeric": "cpp",
+        "valarray": "cpp",
+        "xtree": "cpp",
+        "xtime": "cpp"
     }
 }
