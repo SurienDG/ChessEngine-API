@@ -1,0 +1,16 @@
+{
+  "name": "chess_functions",
+  "version": "1.0.0",
+  "description": "c++ chess functions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "node-gyp rebuild"
+  },
+  "author": "Surien Das-Giwojno",
+  "license": "MIT",
+  "gypfile": true,
+  "dependencies": {
+    "napi-thread-safe-callback": "0.0.6"
+  }
+}

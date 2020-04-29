@@ -5,6 +5,10 @@ const port = 3000;
 
 import https from 'https';
 import bodyParser from 'body-parser';
+import {validate, validateAndMakeMove} from 'chess_functions';
+
+validate();
+
 app.use(bodyParser.json());
 
 

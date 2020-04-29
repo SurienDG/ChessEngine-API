@@ -1,36 +1,20 @@
 
 #include <napi.h>
-#include "napi-thread-safe-callback.hpp"
-#include <chrono>
 #include <thread>
+#include "napi-thread-safe-callback.hpp"
 
-Napi::Promise threads(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
-    Napi::HandleScope scope(env);
-    Napi::Promise::Deferred test = new Napi::Promise::Deferred(env);
-    Napi::ThreadSafeFunction testing = Napi::ThreadSafeFunction::New(
-        env,
-        Napi::Function::New(env,[](const Napi::CallbackInfo& cbinfo) {
-            Napi::HandleScope scope(cbinfo.Env());
-            test->Resolve(Napi::String::New(cbinfo.Env(), "test"));
-            return cbinfo.Env().Undefined();
-        }),
-        test
-        ,
-        "test", 0, 1);
-
-    std::thread([&test = testing]() {
-        std::this_thread::sleep_for (std::chrono::seconds(5));
-        test.BlockingCall( [](Napi::Env env, Napi::Function jsCallback) {
-                // Transform native data into JS data, passing it to the
-                // provided `jsCallback` -- the TSFN's JavaScript function.
-                jsCallback.Call({});
-
-            });
-            test.Release();
+Napi::Boolean threads(const Napi::CallbackInfo& info) {
+    auto resolve =
+        std::make_unique<ThreadSafeCallback>(info[0].As<Napi::Function>());
+    std::thread([resolve = std::move(resolve)]() {
+        resolve->callError("error");
+        resolve->call([](Napi::Env env, std::vector<napi_value>& args) {
+            // This will run in main thread and needs to construct the
+            // arguments for the call
+            args = {Napi::String::New(env, "test")};
+        });
     }).detach();
-
-    return test->Promise();
+    return Napi::Boolean::New(info.Env(), true);
 }
 
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
