@@ -1,25 +1,24 @@
 import bindings from 'bindings';
 
 
-const addon: { hello: (func: (value?: any) => void) => Promise<string> } = bindings('hello');
+const chessFunctions: {
+    validate_cPlus: (FEN: string, value?: any) => void,
+    validateAndMakeMove_cPlus: (FEN: string, value?: any) => void
+} = bindings('chessFunctions');
 
-export function validate(): void {
+export function validate(FEN: string): Promise<boolean> {
 
-    new Promise((resolve) => {
-        addon.hello(resolve);
-
-    }).then((test) => {
-
-        console.log(test);
-
-    }).catch ((err) => {
-        console.error('err' + err);
+    return new Promise((resolve) => {
+        chessFunctions.validateAndMakeMove_cPlus(FEN, resolve);
     });
 
 
+
 }
-export function validateAndMakeMove(): void {
-    // empty for now
+export function validateAndMakeMove(FEN:string): Promise<string> {
+    return new Promise((resolve) => {
+        chessFunctions.validate_cPlus(FEN, resolve);
+    });
 }
 
 

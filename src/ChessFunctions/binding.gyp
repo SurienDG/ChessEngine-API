@@ -1,10 +1,10 @@
 {
   "targets": [
     {
-      "target_name": "hello",
+      "target_name": "chessFunctions",
       "cflags!": [ "-fno-exceptions" ],
       "cflags_cc!": [ "-fno-exceptions" ],
-      "sources": [ "cPlusThreads.cc" ],
+      "sources": [ "chessJS.cc", "promiseWrapper.cc" ],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")",
         "<!@(node -p \"require('napi-thread-safe-callback').include\")"
