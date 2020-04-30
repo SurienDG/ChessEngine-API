@@ -30,6 +30,31 @@ app.get('/ExistingGame', (req, res) => {
     // res.json(// put game id & FEN object)
 });
 
+app.put('/MakeMove', (req, res) => {
+    const { userid, gameid, OLDFEN, NEWFEN, AI } = req.body;
+
+    // check database if OLDFEN is equal to data base if not
+    // res.status(500).json({message: "out of sync", updatedFEN: FENFROMDATABASE})
+
+    // if not continue call validate
+    // if (AI) {
+    /*validateAndMakeMove(OLDFEN, NEWFEN).then((FEN) => {
+
+    }).catch((err : String) => {
+        console.error(err);
+    });
+    // }*/
+    /*else {
+        validate(OLDFEN, NEWFEN).then((result) => {
+            res.json({FEN*: NEWFEN})
+        }).catch((err: String)=> {
+            res.status(400).json({FEN: OLDFEN})
+        })
+    }*/
+    // update database
+
+});
+
 
 // implement like this
 // https://hackernoon.com/set-up-ssl-in-nodejs-and-express-using-openssl-f2529eab5bb
