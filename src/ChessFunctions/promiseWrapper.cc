@@ -8,7 +8,7 @@
 #include "json.hpp"
 #include "napi-thread-safe-callback.hpp"
 
-void promiseFuncWrapper(Napi::Function& resolveInput, PromiseFunc promFunc) {
+void promiseFuncWrapper(const Napi::Function& resolveInput, const PromiseFunc promFunc) {
     std::shared_ptr<ThreadSafeCallback> resolveInputPtr =
         std::make_shared<ThreadSafeCallback>(resolveInput);
 

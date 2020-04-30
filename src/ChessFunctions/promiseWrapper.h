@@ -14,6 +14,6 @@ typedef std::function<void(const std::string args)> rejectFunc;
 
 typedef std::function<void(resolveFunc, rejectFunc)> PromiseFunc;
 
-void promiseFuncWrapper(Napi::Function& resolveInput, PromiseFunc promFunc);
+void promiseFuncWrapper(const Napi::Function& resolveInput, const PromiseFunc promFunc);
 
 #endif
