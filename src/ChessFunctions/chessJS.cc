@@ -1,5 +1,4 @@
 #include <napi.h>
-
 #include <thread>
 #include <napi.h>
 #include "json.hpp"

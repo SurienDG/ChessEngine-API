@@ -3,17 +3,18 @@
 #define PROMISEWRAPPER_H
 
 #include <napi.h>
-
 #include <functional>
-
 #include "napi-thread-safe-callback.hpp"
 
+// promise function types
 typedef std::function<void(const std::string args)> resolveFunc;
 typedef std::function<void(const std::string args)> rejectFunc;
 
-
+// type of function type which will be passed promise functions
 typedef std::function<void(resolveFunc, rejectFunc)> PromiseFunc;
 
-void promiseFuncWrapper(const Napi::Function& resolveInput, const PromiseFunc promFunc);
+// this will give the promise function (promFunc) the resolve and reject functions
+// the promise function can then be used to do the main work
+void promiseFuncWrapper(const Napi::Function &resolveInput, const PromiseFunc &promFunc);
 
 #endif
