@@ -1,6 +1,5 @@
 #include <napi.h>
 #include <thread>
-#include <napi.h>
 #include "json.hpp"
 #include "promiseWrapper.h"
 
@@ -9,10 +8,10 @@ using namespace nlohmann;
 Napi::Boolean validateAndMakeMoveJS(const Napi::CallbackInfo &info)
 {
     std::string FEN = info[0].As<Napi::String>();
-    promiseFuncWrapper(info[1].As<Napi::Function>(),
+    promiseFuncWrapper(info[1].As<Napi::Function>(), info[2].As<Napi::Function>(),
                        [&FEN](resolveFunc resolve, rejectFunc reject) {
                            // Add main code here
-                           // resolve(FEN);
+                           //resolve(FEN);
                        });
     return Napi::Boolean::New(info.Env(), true);
 }
@@ -20,10 +19,10 @@ Napi::Boolean validateAndMakeMoveJS(const Napi::CallbackInfo &info)
 Napi::Boolean validationJS(const Napi::CallbackInfo &info)
 {
     std::string FEN = info[0].As<Napi::String>();
-    promiseFuncWrapper(info[1].As<Napi::Function>(),
+    promiseFuncWrapper(info[1].As<Napi::Function>(), info[2].As<Napi::Function>(),
                        [&FEN](resolveFunc resolve, rejectFunc reject) {
                            // Add main code here
-                           //resolve(FEN);
+                           // resolve(FEN); 
                        });
     return Napi::Boolean::New(info.Env(), true);
 }

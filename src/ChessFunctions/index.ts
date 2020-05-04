@@ -2,21 +2,20 @@ import bindings from 'bindings';
 
 
 const chessFunctions: {
-    validate_cPlus: (FEN: string, value?: any) => void,
-    validateAndMakeMove_cPlus: (FEN: string, value?: any) => void
+    validate_cPlus: (FEN: string, resolve: any, reject: any) => void,
+    validateAndMakeMove_cPlus: (FEN: string, resolve: any, reject: any) => void
 } = bindings('chessFunctions');
 
-export function validate(FEN: string): Promise<boolean> {
-    return new Promise((resolve) => {
-        chessFunctions.validate_cPlus(FEN, resolve);
+export function validate(FEN: string): Promise<string> {
+
+    return new Promise((resolve, reject) => {
+        chessFunctions.validate_cPlus(FEN, resolve, reject);
     });
-
-
-
 }
+
 export function validateAndMakeMove(FEN: string): Promise<string> {
-    return new Promise((resolve) => {
-        chessFunctions.validateAndMakeMove_cPlus(FEN, resolve);
+    return new Promise((resolve, reject) => {
+        chessFunctions.validateAndMakeMove_cPlus(FEN, resolve, reject);
 
     });
 }
