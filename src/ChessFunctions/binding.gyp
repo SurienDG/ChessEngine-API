@@ -11,7 +11,6 @@
 
       ],
       "libraries": ["<!@(node -p \"require('napi_thread_safe_promise').libraries\")" ],
-     "defines": [ "NAPI_CPP_EXCEPTIONS" ],
      "msvs_settings": {
       "VCCLCompilerTool": { "ExceptionHandling": 1 }
     },
