@@ -12,6 +12,6 @@
   "gypfile": true,
   "dependencies": {
     "bindings": "^1.5.0",
-    "napi_thread_safe_promise": "^1.0.0"
+    "napi_thread_safe_promise": "^1.0.6"
   }
 }
