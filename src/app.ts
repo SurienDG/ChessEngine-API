@@ -7,7 +7,9 @@ const port = 3000;
 // for error codes as names?
 import https from 'https';
 import bodyParser from 'body-parser';
-import { validate, validateAndMakeMove } from 'chess_functions';
+import { validate, validateAndMakeMove } from './ChessFunctions';
+import UserModel from './models/user.model';
+import { Model } from 'mongoose';
 
 
 app.use(bodyParser.json());
@@ -18,43 +20,8 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/ExistingGames', (req, res) => {
-    const userid = req.body;
-    // do data base query to get gameids for user\
-
-    // res.json(// put array of game id objects here)
-});
-
-app.get('/ExistingGame', (req, res) => {
-    const { userid, gameid } = req.body;
-    // do data base query user using user id and game id
-
-    // res.json(// put game id & FEN object)
-});
-
-app.put('/MakeMove', (req, res) => {
-    const { userid, gameid, OLDFEN, NEWFEN, AI } = req.body;
-
-    // check database if OLDFEN is equal to data base if not
-    // res.status(500).json({message: "out of sync", updatedFEN: FENFROMDATABASE})
-
-    // if not continue call validate
-    // if (AI) {
-    /*validateAndMakeMove(OLDFEN, NEWFEN).then((FEN) => {
-
-    }).catch((err : String) => {
-        console.error(err);
-    });
-    // }*/
-    /*else {
-        validate(OLDFEN, NEWFEN).then((result) => {
-            res.json({FEN*: NEWFEN})
-        }).catch((err: String)=> {
-            res.status(400).json({FEN: OLDFEN})
-        })
-    }*/
-    // update database
-
+app.get('/', (req, res) => {
+    res.send('hello. its a get request');
 });
 
 app.get('/ExistingGames', (req, res) => {
@@ -65,9 +32,17 @@ app.get('/ExistingGames', (req, res) => {
 });
 
 app.get('/ExistingGame', (req, res) => {
-    const { userid, gameid } = req.body;
+    const { userID, gameID } = req.body;
     // do data base query user using user id and game id
-
+    const item = UserModel.findOne({userName: userID}, (err, result) => {
+        if (err) {
+            res.status(500).json(err);
+        }
+        if (!result) {
+            res.send('nada');
+        }
+    }).select('FEN');
+    res.status(201).json(item);
     // res.json(// put game id & FEN object)
 });
 
@@ -95,11 +70,12 @@ app.put('/MakeMove', (req, res) => {
 
 });
 
-import UserModel from './models/user.model';
+
 app.post('/newUser', (req, res) => {
     if (!req.body) {
         // body missing thing to do
     }
+    // TODO: validate the request before making a model here
     const model = new UserModel(req.body);
     model.save()
         .then(doc => {
@@ -115,27 +91,29 @@ app.post('/newUser', (req, res) => {
 
 app.post('/newGame', (req, res) => {
     if (!req.body) {
-        // body missing thing to do
+        // no user/gameid entered error them out
     }
-    const model = new UserModel(req.body);
-    model.save()
-        .then(doc => {
-            if (!doc) {
-                return res.status(500).send(doc);
-            }
-            res.status(201).send(doc);
-        })
-        .catch(err => {
-            res.status(500).json(err);
-        });
+    // const model = new UserModel(req.body);
+    const { userid, gameID } = req.body;
+    const userInfo = {'userName': userid, 'gameid': gameID};
+    console.log(userInfo);
+    // find the game the user has going and change whatever gameState they had to a new game
+    UserModel.findOneAndUpdate(userInfo, {'FEN': 'newGameFEN'});
+    res.send('new game created!');
 });
 
 app.put('/', (req, res) => {
     res.send('PUT handler');
 });
 
-app.delete('/', (req, res) => {
-    res.send('DELETE handler');
+app.delete('/deleteUser', (req, res) => {
+    const { user } = req.body;
+    UserModel.deleteOne({userName: user}, (err) =>{
+        if (err) {
+            // handle it
+        }
+    });
+    res.send('all done');
 });
 
 app.patch('/', (req, res) => {
