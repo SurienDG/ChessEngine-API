@@ -27,8 +27,7 @@
   "scripts": {
     "start": "nodemon",
     "start:prod": "npm run build  && node jscode/app.js",
-    "preinstall": "npm uninstall chess_functions && npm run install:chess_functions && npm run build:chess_functions",
-    "postinstall": "npm install src/ChessFunctions/chess_functions-1.0.0.tgz",
+    "preinstall": "npm uninstall chess_functions && npm run install:chess_functions && npm run build:chess_functions && npm install src/ChessFunctions/chess_functions-1.0.0.tgz",
     "rebuild:chess_functions": "npm uninstall chess_functions && npm run build:chess_functions && npm install src/ChessFunctions/chess_functions-1.0.0.tgz",
     "build": "rimraf jscode && tsc",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
