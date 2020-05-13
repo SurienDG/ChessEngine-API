@@ -4,12 +4,11 @@
   "description": "chess engine with working AI",
   "main": "index.js",
   "dependencies": {
-    "chess_functions": "file:src/ChessFunctions",
+    "chess_functions": "file:src/ChessFunctions/chess_functions-1.0.0.tgz",
     "express": "^4.17.1",
     "https": "^1.0.0",
     "mongodb": "^3.5.7",
-    "mongoose": "^5.9.13",
-    "node-addon-api": "^3.0.0"
+    "mongoose": "^5.9.13"
   },
   "devDependencies": {
     "@types/bindings": "^1.3.0",
@@ -17,6 +16,7 @@
     "@types/mongoose": "^5.7.15",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.2",
+    "node-addon-api": "^3.0.0",
     "node-gyp": "^6.1.0",
     "nodemon": "^2.0.3",
     "rimraf": "^3.0.2",
@@ -27,9 +27,13 @@
   "scripts": {
     "start": "nodemon",
     "start:prod": "npm run build  && node jscode/app.js",
+    "preinstall": "npm uninstall chess_functions && npm run install:chess_functions && npm run build:chess_functions && npm install src/ChessFunctions/chess_functions-1.0.0.tgz",
+    "rebuild:chess_functions": "npm uninstall chess_functions && npm run build:chess_functions && npm install src/ChessFunctions/chess_functions-1.0.0.tgz",
     "build": "rimraf jscode && tsc",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install:chess_functions": "cd ./src/ChessFunctions && npm install",
+    "build:chess_functions": "cd ./src/ChessFunctions && npm pack"
   },
   "husky": {
     "hooks": {
