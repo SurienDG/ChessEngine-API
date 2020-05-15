@@ -10,7 +10,7 @@
         "<!@(node -p \"require('napi_thread_safe_promise').include\")"
 
       ],
-      "libraries": ["<!@(node -p \"require('napi_thread_safe_promise').libraries\")" ],
+      "dependencies": ["<!(node -p \"require('napi_thread_safe_promise').gyp\")"],
      "msvs_settings": {
       "VCCLCompilerTool": { "ExceptionHandling": 1 }
     },
