@@ -1,22 +1,34 @@
 
-import express from 'express';
+import * as fs from 'fs';
+import dotenv from 'dotenv';
+import  secureEnv  from 'secure-env';
 
-const app = express();
-const port = 3000;
+const dev = false;
+
+if (dev) {
+    dotenv.config();
+} else {
+    const envPass = fs.readFileSync('secret.txt').toString();
+    process.env = secureEnv({ secret: envPass });
+}
 
 // for error codes as names?
+import express from 'express';
 import https from 'https';
 import bodyParser from 'body-parser';
-import { validate, validateAndMakeMove } from './ChessFunctions';
+import { validate, validateAndMakeMove } from 'chess_functions';
 import UserModel from './models/user.model';
-import { Model } from 'mongoose';
+
+
+const app = express();
+
 
 
 app.use(bodyParser.json());
 
 
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:' + port);
+    res.header('Access-Control-Allow-Origin', 'http://localhost:' + process.env.PORT);
     next();
 });
 
@@ -69,7 +81,6 @@ app.put('/MakeMove', (req, res) => {
     // update database
 
 });
-
 
 app.post('/newUser', (req, res) => {
     if (!req.body) {
@@ -126,6 +137,6 @@ app.patch('/', (req, res) => {
 
 
 
-app.listen(port, () => console.log(`Listening on port ${port}!`));
+app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}!`));
 
 
