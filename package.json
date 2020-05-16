@@ -44,7 +44,7 @@
   },
   "lint-staged": {
     "*.ts": [
-      "tslint -c tslint.json 'src/**/*.ts' --fix",
+      "tslint --project tsconfig.json --fix",
       "git add"
     ]
   },
