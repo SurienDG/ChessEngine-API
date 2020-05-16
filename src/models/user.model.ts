@@ -1,10 +1,10 @@
 // import {mongoose} from 'mongoose';
 import  mongoose = require('mongoose');
 
-const user = 'dbAdmin';
-const password = 'Ps5@BTqPHBqb';
-const database = 'usersdb';
-const server = 'cluster0-mjmqj.azure.mongodb.net';
+const user = process.env.DATABASEUSER;
+const password = process.env.DATABASEPASS;
+const database = process.env.DATABASENAME;
+const server = process.env.DATABASESERVER;
 
 
 mongoose.connect(`mongodb+srv://${user}:${password}@${server}/${database}?retryWrites=true&w=majority`,
