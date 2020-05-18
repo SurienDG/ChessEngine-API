@@ -44,18 +44,19 @@ app.get('/ExistingGames', (req, res) => {
 });
 
 app.get('/ExistingGame', (req, res) => {
-    const { userID, gameID } = req.body;
-    // do data base query user using user id and game id
-    const item = UserModel.findOne({userName: userID}, (err, result) => {
+    const { user } = req.body;
+    console.log(user);
+    UserModel.findOne({userName: user}, (err, result) => {
         if (err) {
             res.status(500).json(err);
         }
-        if (!result) {
+        else if (!result) {
             res.send('nada');
         }
-    }).select('FEN');
-    res.status(201).json(item);
-    // res.json(// put game id & FEN object)
+        else {
+            res.send(result);
+        }
+    });
 });
 
 app.put('/MakeMove', (req, res) => {
@@ -82,12 +83,13 @@ app.put('/MakeMove', (req, res) => {
 
 });
 
+app.put('/', (req, res) => {
+    res.send('PUT handler');
+});
+
 app.post('/newUser', (req, res) => {
-    if (!req.body) {
-        // body missing thing to do
-    }
-    // TODO: validate the request before making a model here
-    const model = new UserModel(req.body);
+    // TODO: validate the request before making a model here (like ensuring name isnt taken etc)
+    const model = new UserModel({userName: req.query.name});
     model.save()
         .then(doc => {
             if (!doc) {
@@ -100,26 +102,26 @@ app.post('/newUser', (req, res) => {
         });
 });
 
+
+// set option new:true otherwise it spits out the old document (dunno how yet)
 app.post('/newGame', (req, res) => {
-    if (!req.body) {
-        // no user/gameid entered error them out
-    }
-    // const model = new UserModel(req.body);
-    const { userid, gameID } = req.body;
-    const userInfo = {'userName': userid, 'gameid': gameID};
-    console.log(userInfo);
     // find the game the user has going and change whatever gameState they had to a new game
-    UserModel.findOneAndUpdate(userInfo, {'FEN': 'newGameFEN'});
-    res.send('new game created!');
+    UserModel.findOneAndUpdate({userName: req.query.name}, {'FEN': 'A_NEW_FEN'},  (err, doc) => {
+        if (err) {
+            // handle it
+        }
+        else if (!doc) {
+            // handle it
+        }
+        else {
+            res.send(doc);
+        }
+    });
 });
 
-app.put('/', (req, res) => {
-    res.send('PUT handler');
-});
 
 app.delete('/deleteUser', (req, res) => {
-    const { user } = req.body;
-    UserModel.deleteOne({userName: user}, (err) =>{
+    UserModel.deleteOne({userName: req.query.name}, (err) =>{
         if (err) {
             // handle it
         }
