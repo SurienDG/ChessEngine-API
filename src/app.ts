@@ -12,7 +12,6 @@ if (dev) {
     process.env = secureEnv({ secret: envPass });
 }
 
-// for error codes as names?
 import express from 'express';
 import https from 'https';
 import bodyParser from 'body-parser';
@@ -45,7 +44,6 @@ app.get('/ExistingGames', (req, res) => {
 
 app.get('/ExistingGame', (req, res) => {
     const { user } = req.body;
-    console.log(user);
     UserModel.findOne({userName: user}, (err, result) => {
         if (err) {
             res.status(500).json(err);
@@ -63,15 +61,30 @@ app.put('/MakeMove', (req, res) => {
     const { userid, gameid, OLDFEN, NEWFEN, AI } = req.body;
 
     // check database if OLDFEN is equal to data base if not
+    // currently spits out FEN + id in db. Need just FEN to compare
+    UserModel.findOne({userName: userid}, 'FEN', (err, result) => {
+        if (err) {
+            // handle it
+        }
+        else if (!result) {
+            // handle it
+        }
+        else {
+            console.log(result);
+        }
+    });
+    // if out of sync:
     // res.status(500).json({message: "out of sync", updatedFEN: FENFROMDATABASE})
 
-    // if not continue call validate
-    // if (AI) {
-    /*validateAndMakeMove(OLDFEN, NEWFEN).then((FEN) => {
-    }).catch((err : String) => {
-        console.error(err);
-    });
-    // }*/
+    if (AI) {
+        // send the FEN to the bot to make a move
+        // validate(OLDFEN, NEWFEN).then((FEN) => {
+        //      call move function here
+        // }).catch((err : String) => {
+        //     console.error(err);
+        // });
+    }
+
     /*else {
         validate(OLDFEN, NEWFEN).then((result) => {
             res.json({FEN*: NEWFEN})
@@ -103,10 +116,10 @@ app.post('/newUser', (req, res) => {
 });
 
 
-// set option new:true otherwise it spits out the old document (dunno how yet)
 app.post('/newGame', (req, res) => {
     // find the game the user has going and change whatever gameState they had to a new game
-    UserModel.findOneAndUpdate({userName: req.query.name}, {'FEN': 'A_NEW_FEN'},  (err, doc) => {
+    const newGameFEN = 'A_NEW_FEN2';
+    UserModel.findOneAndUpdate({userName: req.query.name}, {'FEN': newGameFEN}, {new: true},  (err, doc) => {
         if (err) {
             // handle it
         }
