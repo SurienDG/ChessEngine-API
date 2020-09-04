@@ -40,10 +40,18 @@ app.get('/ExistingGames', (req, res) => {
 });
 
 app.get('/ExistingGame', (req, res) => {
-    const { userid, gameid } = req.body;
-    // do data base query user using user id and game id
-
-    // res.json(// put game id & FEN object)
+    const { user } = req.body;
+    UserModel.findOne({userName: user}, (err, result) => {
+        if (err) {
+            res.status(500).json(err);
+        }
+        else if (!result) {
+            res.send('nada');
+        }
+        else {
+            res.send(result);
+        }
+    });
 });
 
 app.put('/MakeMove', (req, res) => {
