@@ -12,7 +12,8 @@ mongoose.connect(`mongodb+srv://${user}:${password}@${server}/${database}?retryW
     { useNewUrlParser: true, useUnifiedTopology: true });
 
 const UserSchema = new mongoose.Schema({
-    userName: String,
+    player1: {type: String, default: null},
+    player2: {type: String, default: null},
     gameid: {type: Number, default: 0},
     FEN: { type: String, default: 'newGameString'},
     AIOn: { type: Boolean, default: false}
