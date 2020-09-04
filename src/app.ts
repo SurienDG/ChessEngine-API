@@ -1,9 +1,9 @@
 
 import * as fs from 'fs';
 import dotenv from 'dotenv';
-import  secureEnv  from 'secure-env';
+import secureEnv from 'secure-env';
 
-const dev = false;
+const dev = true;
 
 if (dev) {
     dotenv.config();
@@ -12,7 +12,7 @@ if (dev) {
     process.env = secureEnv({ secret: envPass });
 }
 
-import express from 'express';
+import express, { json } from 'express';
 import https from 'https';
 import bodyParser from 'body-parser';
 import { validate, validateAndMakeMove } from 'chess_functions';
@@ -35,16 +35,9 @@ app.get('/', (req, res) => {
     res.send('hello. its a get request');
 });
 
-app.get('/ExistingGames', (req, res) => {
-    const userid = req.body;
-    // do data base query to get gameids for user\
-
-    // res.json(// put array of game id objects here)
-});
-
 app.get('/ExistingGame', (req, res) => {
     const { user } = req.body;
-    UserModel.findOne({userName: user}, (err, result) => {
+    UserModel.findOne({ userName: user },  (err, result) => {
         if (err) {
             res.status(500).json(err);
         }
@@ -58,19 +51,20 @@ app.get('/ExistingGame', (req, res) => {
 });
 
 app.put('/MakeMove', (req, res) => {
-    const { userid, gameid, OLDFEN, NEWFEN, AI } = req.body;
+    const { userid1, userid2, gameid, OLDFEN, NEWFEN, AI } = req.body;
 
+    console.log(userid1);
     // check database if OLDFEN is equal to data base if not
     // currently spits out FEN + id in db. Need just FEN to compare
-    UserModel.findOne({userName: userid}, 'FEN', (err, result) => {
+    UserModel.findOne({ player1: {$eq: userid1}, player2: {$eq: userid2} }, 'FEN',  (err, result) => {
         if (err) {
-            // handle it
+            res.json(err);
         }
         else if (!result) {
-            // handle it
+            res.json(result);
         }
         else {
-            console.log(result);
+            res.json(result);
         }
     });
     // if out of sync:
@@ -102,7 +96,7 @@ app.put('/', (req, res) => {
 
 app.post('/newUser', (req, res) => {
     // TODO: validate the request before making a model here (like ensuring name isnt taken etc)
-    const model = new UserModel({userName: req.query.name});
+    const model = new UserModel({ userName: req.query.name });
     model.save()
         .then(doc => {
             if (!doc) {
@@ -119,7 +113,7 @@ app.post('/newUser', (req, res) => {
 app.post('/newGame', (req, res) => {
     // find the game the user has going and change whatever gameState they had to a new game
     const newGameFEN = 'A_NEW_FEN2';
-    UserModel.findOneAndUpdate({userName: req.query.name}, {'FEN': newGameFEN}, {new: true},  (err, doc) => {
+    UserModel.findOneAndUpdate({ userName: req.query.name }, { 'FEN': newGameFEN }, { new: true }, (err, doc) => {
         if (err) {
             // handle it
         }
@@ -134,7 +128,7 @@ app.post('/newGame', (req, res) => {
 
 
 app.delete('/deleteUser', (req, res) => {
-    UserModel.deleteOne({userName: req.query.name}, (err) =>{
+    UserModel.deleteOne({ userName: req.query.name }, (err) => {
         if (err) {
             // handle it
         }
