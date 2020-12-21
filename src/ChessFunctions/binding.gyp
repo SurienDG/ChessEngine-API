@@ -6,9 +6,8 @@
       "cflags_cc!": [ "-fno-exceptions" ],
       "sources": [ "chessJS.cc" ],
       "include_dirs": [
-        "<!@(node -p \"require('node-addon-api').include\")",
+        "<!@(node -p \"require('node-addon-api').include_dir\")",
         "<!@(node -p \"require('napi_thread_safe_promise').include\")"
-
       ],
       "dependencies": ["<!(node -p \"require('napi_thread_safe_promise').gyp\")"],
      "msvs_settings": {
