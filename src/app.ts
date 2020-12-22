@@ -1,7 +1,11 @@
-
-import * as fs from 'fs';
+import bodyParser from 'body-parser';
+import { validate } from 'chess_functions';
 import dotenv from 'dotenv';
+import express from 'express';
+import * as fs from 'fs';
 import secureEnv from 'secure-env';
+import UserModel from './models/user.model';
+import mongoose from 'mongoose';
 
 const dev = true;
 
@@ -12,16 +16,9 @@ if (dev) {
     process.env = secureEnv({ secret: envPass });
 }
 
-import express, { json } from 'express';
-import https from 'https';
-import bodyParser from 'body-parser';
-import { validate, validateAndMakeMove } from 'chess_functions';
-import UserModel from './models/user.model';
 
 
 const app = express();
-
-
 
 app.use(bodyParser.json());
 
@@ -31,13 +28,10 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/', (req, res) => {
-    res.send('hello. its a get request');
-});
 
 app.get('/ExistingGame', (req, res) => {
     const { user } = req.body;
-    UserModel.findOne({ userName: user },  (err, result) => {
+    UserModel.findOne({ userName: user }, (err: mongoose.CallbackError, result: mongoose.Document) => {
         if (err) {
             res.status(500).json(err);
         }
@@ -56,12 +50,12 @@ app.put('/MakeMove', (req, res) => {
     console.log(userid1);
     // check database if OLDFEN is equal to data base if not
     // currently spits out FEN + id in db. Need just FEN to compare
-    UserModel.findOne({ player1: {$eq: userid1}, player2: {$eq: userid2} }, 'FEN',  (err, result) => {
+    UserModel.findOne({ gameid: { $eq: gameid } }, (err: mongoose.CallbackError, result: mongoose.Document) => {
         if (err) {
-            res.json(err);
+            res.status(400).json(err);
         }
         else if (!result) {
-            res.json(result);
+            res.status(404).json(result);
         }
         else {
             res.json(result);
@@ -77,15 +71,13 @@ app.put('/MakeMove', (req, res) => {
         // }).catch((err : String) => {
         //     console.error(err);
         // });
+    } else {
+        validate(OLDFEN).then((result) => {
+            res.json({ FEN: NEWFEN });
+        }).catch((err: string) => {
+            res.status(400).json({ FEN: OLDFEN });
+        });
     }
-
-    /*else {
-        validate(OLDFEN, NEWFEN).then((result) => {
-            res.json({FEN*: NEWFEN})
-        }).catch((err: String)=> {
-            res.status(400).json({FEN: OLDFEN})
-        })
-    }*/
     // update database
 
 });
@@ -128,7 +120,7 @@ app.post('/newGame', (req, res) => {
 
 
 app.delete('/deleteUser', (req, res) => {
-    UserModel.deleteOne({ userName: req.query.name }, (err) => {
+    UserModel.deleteOne({ userName: req.query.name }, {}, (err) => {
         if (err) {
             // handle it
         }

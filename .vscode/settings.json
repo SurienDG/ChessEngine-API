@@ -63,5 +63,12 @@
         "valarray": "cpp",
         "xtree": "cpp",
         "xtime": "cpp"
-    }
+    },
+    "C_Cpp.clang_format_sortIncludes": true,
+    "C_Cpp.clang_format_style": "{BasedOnStyle: Google, ColumnLimit: 80, AlignTrailingComments: true}",
+    "C_Cpp.clang_format_fallbackStyle": "{BasedOnStyle: Google, ColumnLimit: 80, AlignTrailingComments: true}",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.tslint": true
+    },
+    "typescript.tsdk": "node_modules/typescript/lib"
 }
