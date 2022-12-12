@@ -6,7 +6,7 @@
   "dependencies": {
     "chess_functions": "file:src/ChessFunctions/chess_functions-1.0.0.tgz",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "https": "^1.0.0",
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.13",
